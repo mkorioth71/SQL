@@ -9,6 +9,7 @@ CREATE TABLE superstore (
     average_rating DECIMAL(3, 2)
 );
 
+
 INSERT INTO superstore (item_id, item_name, category, price, stock_quantity, average_rating)
 VALUES
     (1, 'Stainless Steel Cookware Set', 'Kitchen Supplies', 89.99, 50, 4.6),
