@@ -1,0 +1,47 @@
+#In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
+
+#1. How many orders were placed in January? 
+SELECT COUNT(orderID)
+FROM JanSales
+WHERE length(orderID) = 6
+AND orderid <> 'Order ID';
+
+#2. How many of those orders were for an iPhone? 
+SELECT COUNT(orderID), product
+FROM JanSales
+WHERE product = 'iPhone' 
+AND length(orderID) = 6
+AND orderid <> 'Order ID';
+
+#3. Select the customer account numbers for all the orders that were placed in February. 
+SELECT distinct acctnum 
+FROM customers cust 
+INNER JOIN FebSales Feb 
+ON cust.order_id=FEB.orderid 
+WHERE length(orderid) = 6 
+AND orderid <> 'Order ID';
+
+#4. Which product was the cheapest one sold in January, and what was the price? 
+SELECT distinct product, price 
+FROM JanSales 
+ORDER BY price ASC LIMIT 1; 
+
+#5. What is the total revenue for each product sold in January?
+SELECT ROUND(SUM(Quantity*price))AS 'Total Revenue', product
+FROM JanSales
+GROUP BY product;
+
+#6. Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each 
+SELECT product, quantity, SUM(Quantity*price) AS 'Total Revenue'
+FROM FebSales
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY product;
+
+#7. How many customers ordered more than 2 products at a time, and what was the average amount s
+SELECT COUNT(customers.acctnum), AVG(FebSales.price*FebSales.Quantity) AS 'Total Spent'
+FROM FebSales
+LEFT JOIN customers
+ON customers.order_id = FebSales.orderID
+WHERE FebSales.Quantity>2
+AND length(orderid) = 6 
+AND orderid <> 'Order ID';;
