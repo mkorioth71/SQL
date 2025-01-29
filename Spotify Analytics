@@ -26,11 +26,42 @@ time_signature integer NOT NULL
 
 #Then I inserted the Spotify Data .csv into the table.
 
-#Next, I explored the data using the following SQL. 
+#Next, I used SQL to answer the following questions. 
 
 #1. What are the top ten artists based on popularity?
-#2. What is the average danceability by artist?
+SELECT artist_name, popularity
+FROM Spotifydata
+ORDER BY popularity DESC LIMIT 10;
+
+#2. What is the average danceability and energy rate by artist?
+SELECT artist_name, ROUND(AVG(danceability),2) Danceability, ROUND(AVG(energy),3) Energy
+FROM Spotifydata
+GROUP BY artist_name;
+
 #3. Which songs have the highest and lowest danceability ratings?
-#4. Artist that have 3 songs with a popularity score of 90 or higher?
-#5. What is the average energy rate by artist?
-#6. Which songs have the highest popularity, danceability, and energy rate?
+SELECT track_name, artist_name, danceability
+FROM Spotifydata
+ORDER BY danceability ASC 
+LIMIT 1;
+
+SELECT track_name, artist_name, danceability
+FROM Spotifydata
+ORDER BY danceability DESC
+LIMIT 1;
+
+#4. What artists have at least 2 tracks with a popularity score of 90 or higher?
+SELECT artist_name, COUNT(artist_name)
+FROM Spotifydata
+WHERE popularity >=90
+GROUP BY artist_name
+HAVING COUNT(artist_name)>=2
+ORDER BY COUNT(artist_name) desc;
+
+#5. What songs have a popularity of >= 90, danceability >= .75, and energy >=.75?
+SELECT track_name, artist_name
+FROM Spotifydata
+WHERE popularity >= 80 
+AND danceability >= .75
+AND energy >=.75
+ORDER BY popularity asc;
+
